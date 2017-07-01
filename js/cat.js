@@ -17,7 +17,7 @@ var studentCollection = db.collection('students');
 studentCollection.load()
 
 function createHTMLString(_id, name) {
-    return "<tr><td class='stundetsId'>" + _id + "</td><td>" + name + "</td><td><button class='updateButton btn btn-warning 'data-id='" + _id + "'>修改</button><button class='deleteButton btn btn-danger 'data-id='" + _id + "'>刪除</button></td></tr>";
+    return "<tr><td class='stundetsId'>" + _id + "</td><td>" + name + "</td><td><button class='updateButton btn btn-warning 'data-id='" + _id + "'>修改</button> <button class='deleteButton btn btn-danger 'data-id='" + _id + "'>刪除</button></td></tr>";
 }
 
 
@@ -74,9 +74,9 @@ function deletedata() {
 
 
     });
-   studentCollection.save()
+    studentCollection.save()
 
-       $(this).parents("tr").remove()
+    $(this).parents("tr").remove()
 }
 $("#studentsTable").on("click", ".deleteButton", deletedata);
 
@@ -84,16 +84,16 @@ function updatedata() {
     var studentsId = $(this).attr("data-id")
     console.log(studentsId)
 
-	var query = {
-            _id: studentsId
-        }
-        var student = studentCollection.find(query)[0];
+    var query = {
+        _id: studentsId
+    }
+    var student = studentCollection.find(query)[0];
 
-        $("#updateName").val(student.name);
-        $("#updateAge").val(student.age);
-        $("#updateSave").attr("data-id", studentsId);
+    $("#updateName").val(student.name);
+    $("#updateAge").val(student.age);
+    $("#updateSave").attr("data-id", studentsId);
 
-        $("#updateModal").modal('show');
+    $("#updateModal").modal('show');
 }
 
 
@@ -102,14 +102,54 @@ $("#studentsTable").on("click", ".updateButton", updatedata);
 
 function updateSave() {
     var studentsId = $(this).attr("data-id");
-    var newstudent = { 
-        name:$("#updateName").val(),
-        age:$("#updateAge").val()
+    var newstudent = {
+        name: $("#updateName").val(),
+        age: $("#updateAge").val()
     }
 
-    studentCollection.updateById(studentsId,newstudent);
+    studentCollection.updateById(studentsId, newstudent);
     studentCollection.save();
     $("#updateModal").modal('hide');
 }
 
 $("#updateSave").on("click", updateSave);
+
+
+function findOldAge() {
+    var findStart = $("#findBiggerAgeInput").val();
+    console.log(findStart)
+    stundets = studentCollection.find({
+        age: {
+            $gte: findStart / 1
+        }
+    });
+
+$("#studentsTable").find("tr").remove();
+for (var i = stundets.length - 1; i >= 0; i--) {
+    $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
+}
+}
+
+
+    $("#findBiggerAgeButton").on("click", findOldAge)
+
+
+function findYoungAge() {
+    var findSmallStart = $("#findSmallerAgeInput").val();
+    console.log(findSmallStart)
+    stundets = studentCollection.find({
+        age: {
+            $lte: findSmallStart / 1
+        }
+    });
+
+$("#studentsTable").find("tr").remove();
+for (var i = stundets.length - 1; i >= 0; i--) {
+    $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
+}
+}
+
+
+
+
+    $("#findSmallerAgeButton").on("click", findYoungAge)
