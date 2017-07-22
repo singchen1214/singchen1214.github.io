@@ -2,6 +2,7 @@ var fdb = new ForerunnerDB();
 var db = fdb.db("myDataBase");
 
 var studentCollection = db.collection('students');
+var parentCollection = db.collection('parents');
 //for (var i = 0; i < 10; i++) {
 //
 //
