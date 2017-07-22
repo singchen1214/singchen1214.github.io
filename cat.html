@@ -19,14 +19,23 @@
 		<button id="findSmallerAgeButton">搜尋</button>
 		<br>
 		<br>
+		<label><input id="cleaningClass" type="checkbox" value="衛生隊"/></label>衛生隊
+		<label><input id="trafficClass" type="checkbox" value="交通隊"/></label>交通隊
+		<label><input id="87Class" type="checkbox" value="87大隊"/></label>87大隊
+		<label><input id="noClass" type="checkbox" value="尚未加入任何隊伍"/></label>尚未加入任何隊伍
+		<button id="findClassButton">搜尋</button>
+		<br>
+		<br>
 		姓名:<input type="" id="name">
 		年齡:<input type="" id="age">
+		隊伍:<input type="" id="class">(衛生隊,交通隊,87大隊,尚未加入任何隊伍)
 		<button id="createData">新增資料</button>
 		<table class="table">
 			<thead>
 				<tr>
 					<td>Id</td>
 					<td>姓名</td>
+					<td>部落</td>
 					<td>操作<td>
 					</tr>
 				</thead>
@@ -44,6 +53,7 @@
 					<div class="modal-body">
 						<p>Id:<span id="studentsId"></span></p>
 						<p>年齡:<span id="studentsAge"></span></p>
+						<p>隊伍:<span id="studentsClass"></span></p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
@@ -60,8 +70,9 @@
 						<h4 class="modal-title" id="myModalLabel">修改資料</h4>
 					</div>
 					<div class="modal-body">
-						姓名：<input type="updateName" id="updateName"></zr>
-						年齡：<input type="updateAge" id="updateAge">
+						姓名：<input type="updateName" id="updateName"></zr><br>
+						年齡：<input type="updateAge" id="updateAge"></zr><br>
+						隊伍：<input type="updateClass" id="updateClass">(衛生隊,交通隊,87大隊,尚未加入任何隊伍)
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

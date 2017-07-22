@@ -41,6 +41,8 @@ function afterload() {
         $("#studentsName").text(student.name);
         $("#studentsAge").text(student.age);
         $("#studentsId").text(student._id);
+        $("#studentsClass").text(student.class);
+
 
         $("#studentsInfo").modal('show');
     })
@@ -52,9 +54,11 @@ setTimeout(afterload, 500);
 function createData() {
     var name = $("#name").val();
     var age = $("#age").val();
+    var newClass = $("#class").val();
     var newstudent = {
         name: name,
-        age: age
+        age: age,
+        class: newClass,
     }
     studentCollection.insert(newstudent);
     studentCollection.save();
@@ -91,7 +95,10 @@ function updatedata() {
 
     $("#updateName").val(student.name);
     $("#updateAge").val(student.age);
+    $("#updateClass").val(student.class);
+
     $("#updateSave").attr("data-id", studentsId);
+
 
     $("#updateModal").modal('show');
 }
@@ -104,7 +111,8 @@ function updateSave() {
     var studentsId = $(this).attr("data-id");
     var newstudent = {
         name: $("#updateName").val(),
-        age: $("#updateAge").val()
+        age: $("#updateAge").val(),
+        class: $("#updateClass").val()
     }
 
     studentCollection.updateById(studentsId, newstudent);
@@ -124,14 +132,15 @@ function findOldAge() {
         }
     });
 
-$("#studentsTable").find("tr").remove();
-for (var i = stundets.length - 1; i >= 0; i--) {
-    $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
-}
+    $("#studentsTable").find("tr").remove();
+    for (var i = stundets.length - 1; i >= 0; i--) {
+        $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
+    }
 }
 
 
-    $("#findBiggerAgeButton").on("click", findOldAge)
+$("#findBiggerAgeButton").on("click", findOldAge)
+
 
 
 function findYoungAge() {
@@ -142,14 +151,54 @@ function findYoungAge() {
             $lte: findSmallStart / 1
         }
     });
-
-$("#studentsTable").find("tr").remove();
-for (var i = stundets.length - 1; i >= 0; i--) {
-    $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
-}
 }
 
 
+function search() {
+
+    var findOldAge = $("#findBiggerAgeInput").val();
+
+    var selectedClasses = []
+
+    if ($("#cleaningClass").prop("checked")) {
+        console.log("尋找衛生隊隊員中")
+        selectedClasses.push("衛生隊");
+    }
+    if ($("#trafficClass").prop("checked")) {
+        console.log("尋找交通隊隊員中")
+        selectedClasses.push("交通隊");
+    }
+    if ($("#87Class").prop("checked")) {
+        console.log("尋找87大隊隊員中")
+        selectedClasses.push("87大隊");
+    }
+    if ($("#noClass").prop("checked")) {
+        console.log("尋找尚未加入任何隊伍的人中")
+        selectedClasses.push("未加入任何隊伍");
+    }
+
+console.log(findOldAge)
 
 
-    $("#findSmallerAgeButton").on("click", findYoungAge)
+    var stundets = studentCollection.find({
+        age: {
+            $gt: findOldAge
+        },
+        class: {
+            $in: selectedClasses
+        }
+    });
+    console.log(stundets)
+
+
+    $("#studentsTable").find("tr").remove();
+    for (var i = stundets.length - 1; i >= 0; i--) {
+        $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
+    }
+
+}
+
+
+
+$("#findSmallerAgeButton").on("click", findYoungAge)
+$("#findClassButton").on("click", search)
