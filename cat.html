@@ -28,14 +28,17 @@
 		<br>
 		姓名:<input type="" id="name">
 		年齡:<input type="" id="age">
-		隊伍:<input type="" id="class">(衛生隊,交通隊,87大隊,尚未加入任何隊伍)
+		隊伍:<input type="" id="class">(衛生隊,交通隊,87大隊,尚未加入任何隊伍)<br>
+		家長:<select id="parent-id">
+  <option value="">請選擇家長</option>
+</select>
 		<button id="createData">新增資料</button>
 		<table class="table">
 			<thead>
 				<tr>
 					<td>Id</td>
 					<td>姓名</td>
-					<td>部落</td>
+					<td>隊伍</td>
 					<td>操作<td>
 					</tr>
 				</thead>
@@ -73,6 +76,10 @@
 						姓名：<input type="updateName" id="updateName"></zr><br>
 						年齡：<input type="updateAge" id="updateAge"></zr><br>
 						隊伍：<input type="updateClass" id="updateClass">(衛生隊,交通隊,87大隊,尚未加入任何隊伍)
+						<br>
+						家長:<select id="updateParent-id">
+  <option value="">請選擇家長</option>
+</select>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

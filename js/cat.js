@@ -16,12 +16,15 @@ var parentCollection = db.collection('parents');
 // studentCollection.save();
 
 studentCollection.load()
+parentCollection.load()
 
 function createHTMLString(_id, name) {
     return "<tr><td class='stundetsId'>" + _id + "</td><td>" + name + "</td><td><button class='updateButton btn btn-warning 'data-id='" + _id + "'>修改</button> <button class='deleteButton btn btn-danger 'data-id='" + _id + "'>刪除</button></td></tr>";
 }
 
-
+function createparentHTMLString(_id,name){
+    return "<option value='"+_id+"'>"+name+"</option>";
+}
 
 function afterload() {
     var stundets = studentCollection.find()
@@ -30,6 +33,13 @@ function afterload() {
         console.log(stundets[i]._id)
         $("#studentsTable").append(createHTMLString(stundets[i]._id, stundets[i].name));
     }
+    var parents = parentCollection.find()
+    for (var i = parents.length - 1; i >= 0; i--) {
+        console.log(parents[i]._id)
+        $("#parent-id").append(createparentHTMLString(parents[i]._id, parents[i].name));
+        $("#updateParent-id").append(createparentHTMLString(parents[i]._id, parents[i].name));
+    }
+
     $("#studentsTable").on("click", ".stundetsId", function() {
         var stundetId = $(this).text();
         console.log(stundetId)
@@ -56,10 +66,12 @@ function createData() {
     var name = $("#name").val();
     var age = $("#age").val();
     var newClass = $("#class").val();
+    var parentID =$("#parent-id").val();
     var newstudent = {
         name: name,
         age: age,
         class: newClass,
+        parentID:parentID 
     }
     studentCollection.insert(newstudent);
     studentCollection.save();
@@ -97,6 +109,7 @@ function updatedata() {
     $("#updateName").val(student.name);
     $("#updateAge").val(student.age);
     $("#updateClass").val(student.class);
+    $("#updateParent-id").val(student.parentID);
 
     $("#updateSave").attr("data-id", studentsId);
 
@@ -110,14 +123,17 @@ $("#studentsTable").on("click", ".updateButton", updatedata);
 
 function updateSave() {
     var studentsId = $(this).attr("data-id");
+    var parentID = $("#updateParent-id").val()
     var newstudent = {
         name: $("#updateName").val(),
         age: $("#updateAge").val(),
-        class: $("#updateClass").val()
+        class: $("#updateClass").val(),
+        parentID: parentID
     }
 
     studentCollection.updateById(studentsId, newstudent);
     studentCollection.save();
+    parentCollection.save();
     $("#updateModal").modal('hide');
 }
 
